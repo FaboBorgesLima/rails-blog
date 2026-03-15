@@ -1,0 +1,29 @@
+<div class="container mx-auto px-5 my-8">
+  <div class="max-w-md mx-auto">
+    <div class="text-center mb-8">
+      <span class="inline-flex w-14 h-14 rounded-3xl bg-gradient-to-br from-purple-500 to-violet-700 items-center justify-center shadow-lg shadow-purple-200 dark:shadow-purple-900/50 mb-4">
+        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+        </svg>
+      </span>
+      <h1 class="text-3xl font-extrabold text-gray-900 dark:text-gray-100">Welcome back</h1>
+      <p class="text-gray-400 dark:text-gray-500 mt-1 text-sm">Sign in to your account</p>
+    </div>
+
+    <%= form_with url: login_path, method: :post, class: "bg-white dark:bg-gray-900 border border-purple-100 dark:border-purple-900/40 rounded-3xl shadow-xl shadow-purple-100/50 dark:shadow-purple-900/20 p-8 space-y-5" do |form| %>
+      <div class="space-y-1">
+        <%= form.label :email, class: "block text-sm font-semibold text-gray-700 dark:text-gray-300" %>
+        <%= form.email_field :email, placeholder: "you@example.com", class: "mt-1 block w-full rounded-2xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm outline-none transition-all duration-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 dark:focus:ring-purple-900/50" %>
+      </div>
+
+      <div class="space-y-1">
+        <%= form.label :password, class: "block text-sm font-semibold text-gray-700 dark:text-gray-300" %>
+        <%= form.password_field :password, placeholder: "Your password", class: "mt-1 block w-full rounded-2xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm outline-none transition-all duration-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 dark:focus:ring-purple-900/50" %>
+      </div>
+
+      <div class="pt-2">
+        <%= form.submit "Log In", class: "w-full rounded-2xl px-5 py-3 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white font-semibold shadow-sm cursor-pointer transition-all duration-200 hover:shadow-lg hover:shadow-purple-200 dark:hover:shadow-purple-900/50 hover:-translate-y-0.5" %>
+      </div>
+    <% end %>
+  </div>
+</div>

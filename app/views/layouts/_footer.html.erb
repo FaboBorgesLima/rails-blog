@@ -1,0 +1,46 @@
+<footer class="mt-auto border-t border-purple-100/60 dark:border-purple-900/40 bg-white/60 dark:bg-gray-950/60 backdrop-blur-sm">
+  <div class="container mx-auto px-5 py-8">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+
+      <%# Brand %>
+      <div class="flex flex-col items-center sm:items-start gap-2">
+        <%= link_to root_path, class: "flex items-center gap-2" do %>
+          <span class="w-8 h-8 rounded-xl bg-gradient-to-br from-purple-500 to-violet-700 flex items-center justify-center shadow-md shadow-purple-300 dark:shadow-purple-900">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+          </span>
+          <span class="font-extrabold text-gray-900 dark:text-white">
+            Rails<span class="text-purple-600 dark:text-purple-400">Blog</span>
+          </span>
+        <% end %>
+        <p class="text-xs text-gray-400 dark:text-gray-500">A modern blog built with Rails &amp; Tailwind</p>
+      </div>
+
+      <%# Nav links %>
+      <nav class="flex items-center gap-1 flex-wrap justify-center">
+        <%= link_to "Home", root_path, class: "px-3 py-1.5 rounded-xl text-sm text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/60 transition-colors" %>
+        <% if auth_user %>
+          <%= link_to "New Post", new_user_post_path(auth_user), class: "px-3 py-1.5 rounded-xl text-sm text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/60 transition-colors" %>
+          <%= link_to "My Profile", user_path(auth_user), class: "px-3 py-1.5 rounded-xl text-sm text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/60 transition-colors" %>
+        <% else %>
+          <%= link_to "Login", login_path, class: "px-3 py-1.5 rounded-xl text-sm text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/60 transition-colors" %>
+        <% end %>
+      </nav>
+
+    </div>
+
+    <%# Divider & copyright %>
+    <div class="mt-6 pt-6 border-t border-purple-100/40 dark:border-purple-900/30 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-400 dark:text-gray-600">
+      <span>&copy; <%= Date.today.year %> RailsBlog. All rights reserved.</span>
+      <span class="flex items-center gap-1">
+        Built with
+        <svg class="w-3.5 h-3.5 text-purple-500" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/>
+        </svg>
+        Rails &amp; Tailwind CSS
+      </span>
+    </div>
+
+  </div>
+</footer>

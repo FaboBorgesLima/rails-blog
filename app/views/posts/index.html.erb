@@ -1,0 +1,41 @@
+<% content_for :title, "Posts" %>
+
+<div class="w-full container mx-auto px-5 mt-8">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="font-bold text-4xl text-gray-900 dark:text-gray-100">Posts</h1>
+    <% if @auth_user %>
+      <%= link_to "+ New post", new_user_post_path(@auth_user), class: "rounded-xl px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm transition-colors duration-600" %>
+    <% end %>
+  </div>
+
+  <% if @posts.any? %>
+    <div id="posts" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <% @posts.each do |post| %>
+        <div class="flex flex-col gap-4">
+          <a href="<%= user_post_path(post.user, post) %>" class="flex flex-col">
+            <%= render post %>
+
+          </a>
+          <% if @auth_user %>
+            <div class="grid grid-cols-2 gap-4">
+              <%= link_to("Edit", edit_user_post_path(post.user, post), class: "font-medium w-full rounded-2xl text-white hover:bg-purple-500 bg-purple-600 text-center p-2 transition-colors duration-600") %>
+              <%= button_to "Delete", user_post_path(post.user, post), method: :delete, form_class: "inline", class: "font-medium w-full rounded-2xl text-white hover:bg-red-500 bg-red-600 text-center p-2 cursor-pointer transition-all duration-600", data: { turbo_confirm: "Are you sure you want to delete this post?" } %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <% if @posts.size == 10 %>
+      <div class="flex justify-center mt-10">
+        <%= link_to "Load more", root_path(offset: (params[:offset].to_i + 1)), class: "rounded-xl px-5 py-2.5 border border-gray-200 hover:bg-gray-50 text-gray-600 font-medium text-sm transition-colors" %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="text-center py-24 text-gray-400">
+      <p class="text-lg font-medium">No posts yet.</p>
+      <% if @auth_user %>
+        <p class="mt-2 text-sm"><%= link_to "Be the first to write one →", new_user_post_path(@auth_user), class: "text-blue-600 hover:underline" %></p>
+      <% end %>
+    </div>
+  <% end %>
+</div>

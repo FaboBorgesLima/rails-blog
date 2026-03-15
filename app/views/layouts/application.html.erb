@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html data-controller="dark-mode">
   <head>
     <title><%= content_for(:title) || "Rails Blog" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : 'Default blog description' %>">
+    <meta name="keywords" content="<%= content_for?(:keywords) ? yield(:keywords) : 'blog, rails, ruby, articles' %>">
+    <meta name="author" content="<%= content_for?(:author) ? yield(:author) : 'Rails Blog Team' %>">
+    <meta property="og:title" content="<%= content_for(:title) || 'Rails Blog' %>">
+    <meta property="og:description" content="<%= content_for?(:description) ? yield(:description) : 'Default blog description' %>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<%= request.original_url %>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= content_for(:title) || 'Rails Blog' %>">
+    <meta name="twitter:description" content="<%= content_for?(:description) ? yield(:description) : 'Default blog description' %>">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -20,11 +31,31 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <script>
+      (function() {
+        var theme = localStorage.getItem('theme');
+        if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
+    <%= render "layouts/header", auth_user: @auth_user %>
+    <main class="flex-1">
+      <% if notice.present? %>
+        <div class="container mx-auto px-5 mt-4">
+          <div class="rounded-2xl bg-purple-50 dark:bg-purple-950/50 border border-purple-200 dark:border-purple-800 text-purple-800 dark:text-purple-200 px-4 py-3 text-sm"><%= notice %></div>
+        </div>
+      <% end %>
+      <% if alert.present? %>
+        <div class="container mx-auto px-5 mt-4">
+          <div class="rounded-2xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 text-sm"><%= alert %></div>
+        </div>
+      <% end %>
       <%= yield %>
     </main>
+    <%= render "layouts/footer", auth_user: @auth_user %>
   </body>
 </html>

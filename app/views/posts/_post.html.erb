@@ -1,0 +1,17 @@
+<div id="<%= dom_id post %>" class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 dark:shadow-purple-700/25 shadow-lg hover:shadow-xl transition-shadow p-6 w-full h-full flex flex-col">
+  <div class="flex-1">
+    <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 leading-snug"><%= post.title %></h2>
+    <% if post.description.present? %>
+      <p class="text-gray-500 dark:text-gray-400 text-sm mt-1"><%= post.description %></p>
+    <% end %>
+    <% if post.content.present? %>
+      <pre class="mt-3 text-gray-700 dark:text-gray-300"><%= post.content.lines.slice(0, 3).join %> <%= post.content.length > 160 || post.content.lines.count > 2 ? "..." : "" %></pre>
+    <% end %>
+  </div>
+  <div class="mt-4 flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500">
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+    <span><%= post.user&.name || "Unknown" %></span>
+    <span>&middot;</span>
+    <time><%= post.created_at.strftime("%b %d, %Y") %></time>
+  </div>
+</div>
