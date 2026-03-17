@@ -102,16 +102,16 @@ jobs:
                     envsubst < /tmp/blog-deploy/kubernetes/secrets-example.yaml | kubectl apply -f -
 
                     # Apply CNPG Database, Redis, Deployment, IngressRoute
-                    kubectl apply -f /tmp/blog-deploy/kubernetes/database.yaml
-                    kubectl apply -f /tmp/blog-deploy/kubernetes/redis.yaml
-                    kubectl apply -f /tmp/blog-deploy/kubernetes/deployment.yaml
-                    kubectl apply -f /tmp/blog-deploy/kubernetes/ingress.yaml
+                    kubectl apply -f kubernetes/database.yaml
+                    kubectl apply -f kubernetes/redis.yaml
+                    kubectl apply -f kubernetes/deployment.yaml
+                    kubectl apply -f kubernetes/ingress.yaml
 
                     # Update the running image and wait for rollout
-                    kubectl set image deployment/blog-deployment \
-                      blog=faboborgeslima/rails-blog:${IMAGE_TAG}
+                    kubectl set image deployment/rails-blog-deployment \
+                      rails-blog=faboborgeslima/rails-blog:${IMAGE_TAG}
 
-                    kubectl rollout status deployment/blog-deployment --timeout=120s
+                    kubectl rollout status deployment/rails-blog-deployment --timeout=120s
 
                     # Cleanup
                     rm -rf /tmp/blog-deploy/
