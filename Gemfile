@@ -25,7 +25,7 @@ gem "bcrypt", "~> 3.1.7"
 # Use redis for caching and background job processing
 gem "redis"
 # Pin connection_pool to 2.x — 3.0 changed the init API and breaks redis-client 0.27
-gem "connection_pool", "~> 2.4"
+gem "connection_pool", "~> 3.0"
 
 # Loads environment variables from .env in development and test
 gem "dotenv-rails", groups: [ :development, :test ]
