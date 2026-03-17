@@ -7,10 +7,6 @@
 #   DB_USERNAME       – PostgreSQL username (CNPG)
 #   DB_PASSWORD       – PostgreSQL password (CNPG)
 #   RAILS_MASTER_KEY  – Rails credentials master key
-#
-# Optional:
-#   NAMESPACE   – Kubernetes namespace (default: default)
-#   SECRET_NAME – Secret name (default: blog-secrets)
 
 set -euo pipefail
 
