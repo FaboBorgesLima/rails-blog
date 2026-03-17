@@ -5,7 +5,7 @@ on:
         branches: [main]
 
 env:
-    IMAGE: faboborgeslima/rails-blog:latest
+    IMAGE: faboborgeslima/rails-blog
 
 jobs:
     # ── 1. CI gate ──────────────────────────────────────────────────────────────
