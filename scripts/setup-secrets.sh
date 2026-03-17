@@ -22,18 +22,14 @@ SECRET_NAME="${SECRET_NAME:-blog-secrets}"
 : "${DB_PASSWORD:?DB_PASSWORD is required}"
 : "${RAILS_MASTER_KEY:?RAILS_MASTER_KEY is required}"
 
-if kubectl get secret "$SECRET_NAME" --namespace "$NAMESPACE" &>/dev/null; then
-  echo "==> Secret '${SECRET_NAME}' already exists in namespace '${NAMESPACE}', skipping."
-  exit 0
-fi
-
-echo "==> Creating secret '${SECRET_NAME}' in namespace '${NAMESPACE}'"
+echo "==> Applying secret '${SECRET_NAME}' in namespace '${NAMESPACE}'"
 
 kubectl create secret generic "$SECRET_NAME" \
   --namespace "$NAMESPACE" \
   --from-literal=DB_HOST="$DB_HOST" \
   --from-literal=DB_USERNAME="$DB_USERNAME" \
   --from-literal=DB_PASSWORD="$DB_PASSWORD" \
-  --from-literal=RAILS_MASTER_KEY="$RAILS_MASTER_KEY"
+  --from-literal=RAILS_MASTER_KEY="$RAILS_MASTER_KEY" \
+  --dry-run=client -o yaml | kubectl apply -f -
 
-echo "==> Secret '${SECRET_NAME}' created."
+echo "==> Secret '${SECRET_NAME}' applied."

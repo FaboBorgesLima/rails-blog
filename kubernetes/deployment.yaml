@@ -16,7 +16,7 @@ spec:
         spec:
             containers:
                 - name: blog
-                  image: faboborgeslima/blog:latest
+                  image: faboborgeslima/rails-blog:latest
                   imagePullPolicy: Always
                   ports:
                       - containerPort: 3000
