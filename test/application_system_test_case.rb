@@ -1,6 +1,13 @@
 require "test_helper"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
+  def sign_in(user, password: "password")
+    visit login_path
+    fill_in "Email", with: user.email
+    fill_in "Password", with: password
+    click_on "Log In"
+  end
+
   if ENV["CAPYBARA_SERVER_PORT"]
     served_by host: "rails-app", port: ENV["CAPYBARA_SERVER_PORT"]
 
