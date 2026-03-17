@@ -81,6 +81,7 @@ jobs:
             - name: Apply manifests & roll out new image
               env:
                   DB_HOST: ${{ secrets.DB_HOST }}
+                  DB_NAME: ${{ secrets.DB_NAME }}
                   DB_USERNAME: ${{ secrets.DB_USERNAME }}
                   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
                   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
@@ -93,6 +94,7 @@ jobs:
 
                     # Render and apply the secret (upsert)
                     export DB_HOST='${DB_HOST}'
+                    export DB_NAME='${DB_NAME}'
                     export DB_USERNAME='${DB_USERNAME}'
                     export DB_PASSWORD='${DB_PASSWORD}'
                     export RAILS_MASTER_KEY='${RAILS_MASTER_KEY}'
