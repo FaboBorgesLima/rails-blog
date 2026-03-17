@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Creates the blog-secrets Kubernetes Secret from environment variables.
+# Safe to run on every deploy: skips creation if the secret already exists.
+#
+# Required env vars:
+#   DB_USERNAME       – PostgreSQL username (CNPG)
+#   DB_PASSWORD       – PostgreSQL password (CNPG)
+#   RAILS_MASTER_KEY  – Rails credentials master key
+#
+# Optional:
+#   NAMESPACE   – Kubernetes namespace (default: default)
+#   SECRET_NAME – Secret name (default: blog-secrets)
+
+set -euo pipefail
+
+NAMESPACE="${NAMESPACE:-default}"
+SECRET_NAME="${SECRET_NAME:-blog-secrets}"
+
+: "${DB_USERNAME:?DB_USERNAME is required}"
+: "${DB_PASSWORD:?DB_PASSWORD is required}"
+: "${RAILS_MASTER_KEY:?RAILS_MASTER_KEY is required}"
+
+if kubectl get secret "$SECRET_NAME" --namespace "$NAMESPACE" &>/dev/null; then
+  echo "==> Secret '${SECRET_NAME}' already exists in namespace '${NAMESPACE}', skipping."
+  exit 0
+fi
+
+echo "==> Creating secret '${SECRET_NAME}' in namespace '${NAMESPACE}'"
+
+kubectl create secret generic "$SECRET_NAME" \
+  --namespace "$NAMESPACE" \
+  --from-literal=DB_USERNAME="$DB_USERNAME" \
+  --from-literal=DB_PASSWORD="$DB_PASSWORD" \
+  --from-literal=RAILS_MASTER_KEY="$RAILS_MASTER_KEY"
+
+echo "==> Secret '${SECRET_NAME}' created."

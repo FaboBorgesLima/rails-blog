@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: blog-deployment
+    labels:
+        purpose: it-is-a-blog
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: blog
+    template:
+        metadata:
+            labels:
+                app: blog
+        spec:
+            containers:
+                - name: blog
+                  image: faboborgeslima/blog:latest
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 3000

@@ -23,6 +23,8 @@ module RailsBlog
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    #
+    config.cache_store = :redis_cache_store, { url: ENV["REDIS_URL"], expires_in: 90.minutes }
 
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
