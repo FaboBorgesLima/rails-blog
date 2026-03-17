@@ -47,7 +47,7 @@ services:
       - bundle_cache:/usr/local/bundle
     environment:
       RAILS_ENV: development
-    command: bin/rails tailwindcss:watch
+    command: bin/rails tailwindcss:watch[always]
 
 volumes:
   postgres_data:
