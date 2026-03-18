@@ -1,3 +1,28 @@
-<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="256" cy="256" r="256" fill="red"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 300" width="100%" height="100%">
+  <defs>
+    <filter id="purple-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="25" result="blur" />
+    </filter>
+    <rect id="bg" width="100%" height="100%" fill="#080911" />
+  </defs>
+
+  <use href="#bg" />
+
+  <circle cx="180" cy="140" r="78" fill="#8d3ef5" filter="url(#purple-glow)" opacity="0.65" />
+
+  <circle cx="180" cy="140" r="78" fill="#8d3ef5" />
+
+  <g stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path
+      d="M 130 155 V 125 C 146 120 162 125 180 133 C 198 125 214 120 230 125 V 155 C 214 150 198 155 180 163 C 162 155 146 150 130 155 Z" />
+    <path d="M 180 133 V 163" />
+  </g>
+
+  <text x="320" y="167" font-family="'Montserrat', system-ui, -apple-system, sans-serif" font-weight="bold"
+    font-size="82" letter-spacing="-1">
+    <tspan fill="#ffffff">Rails</tspan>
+    <tspan fill="#cc9bf8">Blog</tspan>
+  </text>
+
+  <rect x="0" y="295" width="100%" height="5" fill="#2d0a4e" />
 </svg>

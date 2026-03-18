@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : 'Default blog description' %>">
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : 'An Average Dev Blog' %>">
     <meta name="keywords" content="<%= content_for?(:keywords) ? yield(:keywords) : 'blog, rails, ruby, articles' %>">
     <meta name="author" content="<%= content_for?(:author) ? yield(:author) : 'Rails Blog Team' %>">
     <meta property="og:title" content="<%= content_for(:title) || 'Rails Blog' %>">
-    <meta property="og:description" content="<%= content_for?(:description) ? yield(:description) : 'Default blog description' %>">
+    <meta property="og:description" content="<%= content_for?(:description) ? yield(:description) : 'An Average Dev Blog' %>">
     <meta property="og:type" content="website">
     <meta property="og:url" content="<%= request.original_url %>">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<%= content_for(:title) || 'Rails Blog' %>">
-    <meta name="twitter:description" content="<%= content_for?(:description) ? yield(:description) : 'Default blog description' %>">
+    <meta name="twitter:description" content="<%= content_for?(:description) ? yield(:description) : 'An Average Dev Blog' %>">
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
