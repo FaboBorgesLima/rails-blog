@@ -13,15 +13,17 @@ class UsersControllerTest < BaseTestController
   test "should get new" do
     sign_in_as(@user)
     get new_user_url
-    assert_response :success
+    # cannot create new user
+    assert_response :not_found
   end
 
   test "should create user" do
     sign_in_as(@user)
-    assert_difference("User.count") do
+    # cannot create new user, only seed
+    assert_difference("User.count", 0) do
       post users_url, params: { user: { name: "Charlie", email: "charlie@example.com", password: "password", password_confirmation: "password" } }
     end
-    assert_redirected_to user_url(User.find_by(email: "charlie@example.com"))
+    assert_response :not_found
   end
 
   test "should show user" do
@@ -43,9 +45,10 @@ class UsersControllerTest < BaseTestController
 
   test "should destroy user" do
     sign_in_as(@user)
-    assert_difference("User.count", -1) do
+    # cannot delete user
+    assert_difference("User.count", 0) do
       delete user_url(@user)
     end
-    assert_redirected_to users_url
+    assert_response :not_found
   end
 end

@@ -7,6 +7,11 @@ class UsersController < ApplicationController
   def index
     @users = User.all
   end
+  
+  def new
+    # user creation is disabled, only seed users are allowed
+    head :not_found
+  end
 
   def login_form
     render :login
