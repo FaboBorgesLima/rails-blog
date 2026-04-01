@@ -15,3 +15,4 @@ if User.take.nil?
     user.password = "password"
     user.password_confirmation = "password"
   end
+end
