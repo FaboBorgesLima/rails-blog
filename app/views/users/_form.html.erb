@@ -30,6 +30,26 @@
     <%= form.password_field :password_confirmation, id: :user_password_confirmation, placeholder: "Repeat password", class: "mt-1 block w-full rounded-2xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm outline-none transition-all duration-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 dark:focus:ring-purple-900/50" %>
   </div>
 
+  <div class="space-y-1">
+    <%= form.label :description, class: "block text-sm font-semibold text-gray-700 dark:text-gray-300" %>
+    <%= form.text_area :description, id: :user_description, placeholder: "Tell us a bit about yourself…", rows: 3, class: "mt-1 block w-full rounded-2xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm outline-none transition-all duration-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 dark:focus:ring-purple-900/50 resize-none" %>
+  </div>
+
+  <div class="space-y-1">
+    <%= form.label :github_url, "GitHub URL", class: "block text-sm font-semibold text-gray-700 dark:text-gray-300" %>
+    <%= form.url_field :github_url, id: :user_github_url, placeholder: "https://github.com/username", class: "mt-1 block w-full rounded-2xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm outline-none transition-all duration-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 dark:focus:ring-purple-900/50" %>
+  </div>
+
+  <div class="space-y-1">
+    <%= form.label :linkedin_url, "LinkedIn URL", class: "block text-sm font-semibold text-gray-700 dark:text-gray-300" %>
+    <%= form.url_field :linkedin_url, id: :user_linkedin_url, placeholder: "https://linkedin.com/in/username", class: "mt-1 block w-full rounded-2xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm outline-none transition-all duration-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 dark:focus:ring-purple-900/50" %>
+  </div>
+
+  <div class="space-y-1">
+    <%= form.label :linkedin_username, "LinkedIn Username", class: "block text-sm font-semibold text-gray-700 dark:text-gray-300" %>
+    <%= form.text_field :linkedin_username, id: :user_linkedin_username, placeholder: "username", class: "mt-1 block w-full rounded-2xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm outline-none transition-all duration-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 dark:focus:ring-purple-900/50" %>
+  </div>
+
   <div class="pt-2">
     <%= form.submit class: "w-full rounded-2xl px-5 py-3 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white font-semibold shadow-sm cursor-pointer transition-all duration-200 hover:shadow-lg hover:shadow-purple-200 dark:hover:shadow-purple-900/50 hover:-translate-y-0.5" %>
   </div>
