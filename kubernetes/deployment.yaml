@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: rails-blog-deployment
-    labels:
-        purpose: it-is-a-blog
+  name: rails-blog-deployment
+  labels:
+    purpose: it-is-a-blog
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: rails-blog
-    template:
-        metadata:
-            labels:
-                app: rails-blog
-        spec:
-            containers:
-                - name: rails-blog
-                  image: faboborgeslima/rails-blog:latest
-                  imagePullPolicy: Always
-                  ports:
-                      - containerPort: 3000
-                  envFrom:
-                      - secretRef:
-                            name: rails-blog-secrets
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rails-blog
+  template:
+    metadata:
+      labels:
+        app: rails-blog
+    spec:
+      containers:
+        - name: rails-blog
+          image: faboborgeslima/rails-blog:VERSION
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: rails-blog-secrets
 
 ---

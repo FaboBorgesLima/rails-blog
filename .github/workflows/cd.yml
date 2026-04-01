@@ -2,7 +2,8 @@ name: Deploy
 
 on:
   push:
-    branches: [main]
+    tags:
+      - "v*.*.*"
 
 env:
   IMAGE: faboborgeslima/rails-blog
@@ -40,8 +41,9 @@ jobs:
         with:
           images: ${{ env.IMAGE }}
           tags: |
-            type=sha,prefix=,format=short
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest
 
       - name: Build & push
         uses: docker/build-push-action@v6
@@ -54,7 +56,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # ── 3. Deploy to Kubernetes via SSH ─────────────────────────────────────────
+  # ── 3. Deploy to Kubernetes ──────────────────────────────────────────────────
   deploy:
     name: Deploy to Kubernetes
     runs-on: ubuntu-latest
@@ -64,21 +66,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up SSH agent
-        uses: webfactory/ssh-agent@v0.9.0
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Set Kubernetes context
+        uses: azure/k8s-set-context@v4
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
-      - name: Add server to known hosts
-        run: ssh-keyscan -p "${{ secrets.SSH_PORT }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
-
-      - name: Copy Kubernetes manifests and scripts to server
-        run: |
-          ssh -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" mkdir -p /tmp/blog-deploy/
-          scp -P "${{ secrets.SSH_PORT }}" -r kubernetes/ scripts/ \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/blog-deploy/"
-
-      - name: Apply manifests & roll out new image
+      - name: Prepare manifests and apply secrets
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_NAME: ${{ secrets.DB_NAME }}
@@ -87,32 +84,38 @@ jobs:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           REDIS_URL: ${{ secrets.REDIS_URL }}
           IMAGE_TAG: ${{ needs.build.outputs.image_tag }}
-          SSH_TARGET: ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
         run: |
-          ssh -p "${{ secrets.SSH_PORT }}" "$SSH_TARGET" bash -s <<EOF
-            set -euo pipefail
+          # Generate secret manifest
+          kubectl create secret generic rails-blog-secrets \
+            --from-literal=DB_HOST="${DB_HOST}" \
+            --from-literal=DB_NAME="${DB_NAME}" \
+            --from-literal=DB_USERNAME="${DB_USERNAME}" \
+            --from-literal=DB_PASSWORD="${DB_PASSWORD}" \
+            --from-literal=RAILS_MASTER_KEY="${RAILS_MASTER_KEY}" \
+            --from-literal=REDIS_URL="${REDIS_URL}" \
+            --save-config \
+            --dry-run=client -o yaml | kubectl apply -f -
 
-            # Render and apply the secret (upsert)
-            export DB_HOST='${DB_HOST}'
-            export DB_NAME='${DB_NAME}'
-            export DB_USERNAME='${DB_USERNAME}'
-            export DB_PASSWORD='${DB_PASSWORD}'
-            export RAILS_MASTER_KEY='${RAILS_MASTER_KEY}'
-            export REDIS_URL='${REDIS_URL}'
-            envsubst < /tmp/blog-deploy/kubernetes/secrets-example.yaml | kubectl apply -f -
+          # Inject image tag into deployment manifest
+          sed "s/VERSION/${IMAGE_TAG}/g" kubernetes/deployment.yaml > /tmp/deployment.yaml
 
-            # Apply CNPG Database, Redis, Deployment, IngressRoute
-            kubectl apply -f /tmp/blog-deploy/kubernetes/database.yaml
-            kubectl apply -f /tmp/blog-deploy/kubernetes/redis.yaml
-            kubectl apply -f /tmp/blog-deploy/kubernetes/deployment.yaml
-            kubectl apply -f /tmp/blog-deploy/kubernetes/ingress.yaml
+      - name: Apply manifests & roll out new image
+        env:
+          IMAGE_TAG: ${{ needs.build.outputs.image_tag }}
+        run: |
+          set -euo pipefail
 
-            # Update the running image and wait for rollout
-            kubectl set image deployment/rails-blog-deployment \
-              rails-blog=faboborgeslima/rails-blog:${IMAGE_TAG}
+          kubectl apply -f kubernetes/database.yaml
+          kubectl apply -f kubernetes/redis.yaml
+          kubectl apply -f kubernetes/ingress.yaml
+          kubectl apply -f /tmp/deployment.yaml
 
-            kubectl rollout status deployment/rails-blog-deployment --timeout=120s
+          kubectl rollout status deployment/rails-blog-deployment --timeout=120s
 
-            # Cleanup
-            rm -rf /tmp/blog-deploy/
-          EOF
+      - name: Database Migrations
+        run: |
+          POD_NAME=$(kubectl get pods -l app=rails-blog --field-selector=status.phase=Running -o jsonpath="{.items[0].metadata.name}")
+
+          echo "Executing migrations on pod: $POD_NAME"
+          kubectl exec $POD_NAME -- bin/rails db:migrate
+          kubectl exec $POD_NAME -- bin/rails db:seed
