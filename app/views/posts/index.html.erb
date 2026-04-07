@@ -16,7 +16,7 @@
             <%= render post %>
 
           </a>
-          <% if post.can_edit?(@auth_user) %>
+          <% if @auth_user && post.can_edit?(@auth_user) %>
             <div class="grid grid-cols-2 gap-4">
               <%= link_to("Edit", edit_user_post_path(post.user, post), class: "font-medium w-full rounded-2xl text-white hover:bg-purple-500 bg-purple-600 text-center p-2 transition-colors duration-600") %>
               <%= button_to "Delete", user_post_path(post.user, post), method: :delete, form_class: "inline", class: "font-medium w-full rounded-2xl text-white hover:bg-red-500 bg-red-600 text-center p-2 cursor-pointer transition-all duration-600", data: { turbo_confirm: "Are you sure you want to delete this post?" } %>
