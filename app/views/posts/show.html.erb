@@ -26,7 +26,7 @@
 
     <div class="flex flex-wrap gap-3 mt-6">
       <%= link_to "← Back", root_path, class: "rounded-2xl px-5 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 text-gray-700 dark:text-gray-300 font-medium text-sm transition-all duration-200 hover:shadow-md" %>
-      <% if auth_user %>
+      <% if @post.can_edit?(@auth_user) %>
         <%= link_to "Edit", edit_user_post_path(@post.user, @post), class: "rounded-2xl px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-medium text-sm transition-all duration-200 hover:shadow-lg hover:shadow-purple-200 dark:hover:shadow-purple-900/50 hover:-translate-y-0.5" %>
         <%= button_to "Delete", user_post_path(@post.user, @post), method: :delete, form_class: "inline", class: "rounded-2xl px-5 py-2.5 bg-red-50 dark:bg-red-950/40 hover:bg-red-100 dark:hover:bg-red-900/40 border border-red-100 dark:border-red-900/50 text-red-600 dark:text-red-400 font-medium text-sm cursor-pointer transition-all duration-200", data: { turbo_confirm: "Are you sure you want to delete this post?" } %>
       <% end %>

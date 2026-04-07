@@ -117,5 +117,8 @@ jobs:
           POD_NAME=$(kubectl get pods -l app=rails-blog --field-selector=status.phase=Running -o jsonpath="{.items[0].metadata.name}")
 
           echo "Executing migrations on pod: $POD_NAME"
+
+          sleep 10 # wait a bit for the app to be fully ready
+
           kubectl exec $POD_NAME -- bin/rails db:migrate
           kubectl exec $POD_NAME -- bin/rails db:seed
